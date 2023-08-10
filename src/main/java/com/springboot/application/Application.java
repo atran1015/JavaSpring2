@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 // This annotation marks the main class of a Sring Boot application
 @SpringBootApplication
-public class HelloSpringBoot {
+public class Application {
     // Program is being ran in this main function
     public static void main(String[] args) {
       // Creating objects - Aircraft itself is an abstract class, therefore, it can't be instantiated
@@ -32,6 +32,6 @@ public class HelloSpringBoot {
       myHelicopter.printDetails();
 
       // Runs the application    
-      SpringApplication.run(HelloSpringBoot.class, args);
+      SpringApplication.run(Application.class, args);
     }
 }
