@@ -1,4 +1,4 @@
-package com.springboot.application.objects;
+package com.springboot.application.model;
 
 public class Helicopter extends Aircraft {
     // Unique to Heli - blade and rotor

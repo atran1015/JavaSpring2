@@ -1,5 +1,5 @@
-com/springboot/application/objects/Glider.class
-com/springboot/application/objects/Helicopter.class
-com/springboot/application/objects/Jet.class
+com/springboot/application/model/Jet.class
+com/springboot/application/model/Glider.class
 com/springboot/application/Application.class
-com/springboot/application/objects/Aircraft.class
+com/springboot/application/model/Helicopter.class
+com/springboot/application/model/Aircraft.class

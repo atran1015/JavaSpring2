@@ -1,4 +1,4 @@
-package com.springboot.application.objects;
+package com.springboot.application.model;
 // Abstract is being used because it's primarily for objects that are closely related (aircraft, heli, jet, etc)
 public abstract class Aircraft {
     // Attributes/Properties - an Aircraft have these in common
