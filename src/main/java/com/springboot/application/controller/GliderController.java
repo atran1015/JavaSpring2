@@ -1,4 +1,6 @@
 package com.springboot.application.model;
+import com.springboot.application.model.Glider;
+import com.springboot.application.service.GliderService;
 
 import java.util.List;
 
@@ -7,18 +9,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
+@RequestMapping(path="api/v1/glider")
 public class GliderController {
 
+    private final GliderService gliderService;
 
-    @GetMapping("/api/glider")
+    // Constructor
+    @Autowired //instantiates the glider service first, then inject it into the constructor
+    public GliderController(GliderService gliderService) {
+        this.gliderService = gliderService;
+    }
 
-    @PostMapping("/api/glider")
-
-    @Putmapping("api/glider/[id]")
-
-    @DeleteMapping("api/glider/[id]")
+    @GetMapping
+    public List<Glider> getGliders() {
+        return gliderService.getGliders();
+    }
 }
