@@ -1,14 +1,18 @@
 package com.springboot.application.service;
 import com.springboot.application.model.Glider;
+
 import java.util.List;
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Service
 public class GliderService {
     // Creating an array list to hold glider objects with index numbers automatically assigned
-    // using List<Glider> over ArrayList<Glider> because it provides faster objects manipulation
+    // Using List<Glider> over ArrayList<Glider> because it provides faster objects manipulation
     private final List<Glider> gliders = new ArrayList<>();
     
     // Return current list of gliders
@@ -17,21 +21,28 @@ public class GliderService {
     }
 
     // Create a list of glider objects
-    public void createGlider(String tailNum, String cockpitLoc, String wingsLength, int wheelsNum, int length, int width, String towPlaneName) {
-        Glider myGlider = new Glider(tailNum, cockpitLoc, wingsLength, wheelsNum, length, width, towPlaneName);
+    public void createGlider(String tailNum, int wheelsNum, int length, String towPlaneName) {
+        Glider myGlider = new Glider(tailNum, wheelsNum, length, towPlaneName);
         gliders.add(myGlider);
     }
 
-    // TODO: currently fixing this
-    public void deleteGlider(String tailNumber) {
+    // Returns a bool after removing the correct glider associated with the tail number
+    public boolean deleteGlider(String tailNumber) {
+        var isRemoved = gliders.removeIf(glider -> glider.getTailNumber().equals(tailNumber));
+        return isRemoved;
+    }
+
+    // Find glider by tail number and then update old glider's information to new glider's information
+    public void updateGlider(String tailNumber, Glider newGliderDetails) {
+        // For-each loop
         for (Glider glider : gliders) {
-            if (tailNumber == glider.getTailNumber()) {
-                
-                gliders.remove(glider);
+            if (glider.getTailNumber().equals(tailNumber)) {
+                // Using model's functions
+                glider.setTailNumber(newGliderDetails.getTailNumber());
+                glider.setNumberOfWheels(newGliderDetails.getNumberOfWheels());
+                glider.setLength(newGliderDetails.getLength());
+                glider.setTowPlaneName(newGliderDetails.getTowPlaneName());
             }
         }
     }
-
-
-    //public void findGliderByTailNum();
 }

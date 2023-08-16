@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
@@ -22,7 +24,7 @@ public class GliderController {
     private final GliderService gliderService;
 
     // Constructor
-    @Autowired //instantiates the glider service first, then inject it into the constructor
+    @Autowired // Instantiates the glider service first, then inject it into the constructor
     public GliderController(GliderService gliderService) {
         this.gliderService = gliderService;
     }
@@ -33,15 +35,32 @@ public class GliderController {
         return gliderService.getGliders();
     }
 
+
     // For POST method
     @PostMapping
     public void createGlider(@RequestBody Glider glider) {
-        gliderService.createGlider(glider.getTailNumber(), glider.getCockpitLocation(), glider.getWingsSpan(), glider.getNumberOfWheels(), glider.getLength(), glider.getWidth(), glider.getTowPlaneName());
+        gliderService.createGlider(glider.getTailNumber(), glider.getNumberOfWheels(), glider.getLength(), glider.getTowPlaneName());
     }
 
-    // TODO: currently not working
-    @DeleteMapping(path = "{tailNumber}")
-    public void deleteGlider(@PathVariable("tailNumber") String tailNumber) {
-        gliderService.deleteGlider(tailNumber);
+    // for DELETE method
+    @DeleteMapping("{tailNumber}") // full access to url would be http://localhost:8080/api/v1/gliders/1abc
+    public ResponseEntity<String> deleteGlider(@PathVariable("tailNumber") String tailNumber) {
+
+        var isRemoved = gliderService.deleteGlider(tailNumber);
+        // if glider is not deleted, do this:
+        if (!isRemoved) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // else, do this:
+        return new ResponseEntity<>(tailNumber, HttpStatus.OK);
     }
+
+    // for UPDATE method
+    @PutMapping("{tailNumber}") // full access to url would be http://localhost:8080/api/v1/gliders/1abc
+    public ResponseEntity<String> updateGlider(@PathVariable("tailNumber") String tailNumber, @RequestBody Glider newGliderDetails) {
+        gliderService.updateGlider(tailNumber, newGliderDetails);
+        return ResponseEntity.ok("in progress");
+    }
+
+
 }

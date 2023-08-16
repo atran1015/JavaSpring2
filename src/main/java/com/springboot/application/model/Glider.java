@@ -8,8 +8,8 @@ public class Glider extends Aircraft {
     public Glider() {}
 
     // Default Constructor
-    public Glider(String tailNum, String cockpitLoc, String wingsLength, int wheelsNum, int length, int width, String towPlaneName) {
-        super(tailNum, cockpitLoc, wingsLength, wheelsNum, length, width);
+    public Glider(String tailNum, int wheelsNum, int length, String towPlaneName) {
+        super(tailNum, wheelsNum, length);
         this.towPlane = towPlaneName;
     }
 
@@ -25,11 +25,8 @@ public class Glider extends Aircraft {
     @Override
     public void printDetails() {
         System.out.println("Tail Number: " + getTailNumber());
-        System.out.println("Cockpit Location: " + getCockpitLocation());
-        System.out.println("Wings Span Length: " + getWingsSpan());
         System.out.println("Number of Wheels: " + getNumberOfWheels());
         System.out.println("Length: " + getLength());
-        System.out.println("Width: " + getWidth());
         System.out.println("Name of Towplane: " + getTowPlaneName());
     }
 }
