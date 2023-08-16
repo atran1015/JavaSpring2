@@ -37,7 +37,7 @@ public class GliderController {
 
 
     // For POST method
-    @PostMapping
+    @PostMapping // TODO: what happens if a Jet object is being passed in?
     public void createGlider(@RequestBody Glider glider) {
         gliderService.createGlider(glider.getTailNumber(), glider.getNumberOfWheels(), glider.getLength(), glider.getTowPlaneName());
     }
