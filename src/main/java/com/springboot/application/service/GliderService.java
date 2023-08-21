@@ -20,6 +20,26 @@ public class GliderService {
         return gliders;
     }
 
+    // Return a glider object
+    public Glider getOneGlider(String tailNumber) {
+        Glider aGlider = new Glider();
+        boolean gliderExists = false;
+        for (Glider glider : gliders) {
+            if (glider.getTailNumber().equals(tailNumber)) {
+                // works without else statement
+                aGlider = glider;
+                gliderExists = true;
+            } 
+        }
+
+        // Service throws error if glider with corresponding tail number cannot be found
+        if (!gliderExists) {
+            throw new NullPointerException();
+        }
+        
+        return aGlider;
+    }
+
     // Create a list of glider objects
     public void createGlider(String tailNum, int wheelsNum, int length, String towPlaneName) {
         Glider myGlider = new Glider(tailNum, wheelsNum, length, towPlaneName);
