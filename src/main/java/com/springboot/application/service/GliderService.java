@@ -26,7 +26,6 @@ public class GliderService {
         boolean gliderExists = false;
         for (Glider glider : gliders) {
             if (glider.getTailNumber().equals(tailNumber)) {
-                // works without else statement
                 aGlider = glider;
                 gliderExists = true;
             } 
@@ -53,10 +52,12 @@ public class GliderService {
     }
 
     // Find glider by tail number and then update old glider's information to new glider's information
-    public void updateGlider(String tailNumber, Glider newGliderDetails) {
+    public boolean updateGlider(String tailNumber, Glider newGliderDetails) {
+        boolean gliderExists = false;
         // For-each loop
         for (Glider glider : gliders) {
             if (glider.getTailNumber().equals(tailNumber)) {
+                gliderExists = true;
                 // Using model's functions
                 glider.setTailNumber(newGliderDetails.getTailNumber());
                 glider.setNumberOfWheels(newGliderDetails.getNumberOfWheels());
@@ -64,5 +65,7 @@ public class GliderService {
                 glider.setTowPlaneName(newGliderDetails.getTowPlaneName());
             }
         }
+
+        return gliderExists;
     }
 }
