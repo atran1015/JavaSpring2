@@ -36,17 +36,21 @@ public class GliderController {
         } catch (NullPointerException e) { // Controller is handling error thrown by service
             return new ResponseEntity<>("Glider with this tail number, " + tailNumber + ", does not exist.  Not found", HttpStatus.NOT_FOUND);
         }
+        // Returns a glider object
         return new ResponseEntity<>(gliderService.getOneGlider(tailNumber), HttpStatus.OK);
     }
 
 
     // For POST method
-    @PostMapping // TODO: what happens if a Jet object is being passed in?
-    // TODO: what happens if I put in some extra param in the request body?
-    // TODO: Create something with bad data
-    //use try and catch statements in POST
-    public void createGlider(@RequestBody Glider glider) {
-        gliderService.createGlider(glider.getTailNumber(), glider.getNumberOfWheels(), glider.getLength(), glider.getTowPlaneName());
+    @PostMapping
+    public ResponseEntity<?> createGlider(@RequestBody Glider glider) {
+        try {
+            gliderService.createGlider(glider.getTailNumber(), glider.getNumberOfWheels(), glider.getLength(), glider.getTowPlaneName());
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>("Glider can't be created", HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>("Glider has been created", HttpStatus.CREATED);
     }
 
     // for DELETE method

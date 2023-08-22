@@ -41,6 +41,10 @@ public class GliderService {
 
     // Create a list of glider objects
     public void createGlider(String tailNum, int wheelsNum, int length, String towPlaneName) {
+        if (towPlaneName.isEmpty() || tailNum.isEmpty()) {
+            throw new NullPointerException();
+        }
+        
         Glider myGlider = new Glider(tailNum, wheelsNum, length, towPlaneName);
         gliders.add(myGlider);
     }
