@@ -18,7 +18,27 @@ public class JetService {
         return jets;
     }
 
+    public Jet getOneJet(String tailNumber) {
+        Jet aJet = new Jet();
+        boolean jetExists = false;
+        for (Jet jet : jets) {
+            if (jet.getTailNumber().equals(tailNumber)) {
+                aJet = jet;
+                jetExists = true;
+            } 
+        }
+
+        if (!jetExists) {
+            throw new NullPointerException();
+        }
+        
+        return aJet;
+    }
+
     public void createJet(String tailNum, int wheelsNum, int length, String fuel) {
+        if (fuel.isEmpty() || tailNum.isEmpty()) {
+            throw new NullPointerException();
+        }
         Jet myJet = new Jet(tailNum, wheelsNum, length, fuel);
         jets.add(myJet);
     }
@@ -28,17 +48,19 @@ public class JetService {
         return isRemoved;
     }
 
-    public void updateJet(String tailNumber, Jet newJetDetails) {
-
+    public boolean updateJet(String tailNumber, Jet newJetDetails) {
+        boolean jetExists = false;
         for (Jet jet : jets) {
             if (jet.getTailNumber().equals(tailNumber)) {
-
+                jetExists = true;
                 jet.setTailNumber(newJetDetails.getTailNumber());
                 jet.setNumberOfWheels(newJetDetails.getNumberOfWheels());
                 jet.setLength(newJetDetails.getLength());
                 jet.setFuel(newJetDetails.getFuel());
             }
         }
+
+        return jetExists;
     }
 
 }

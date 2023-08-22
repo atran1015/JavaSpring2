@@ -35,11 +35,28 @@ public class JetController {
         return jetService.getJets();
     }
 
+    @GetMapping("{tailNumber}") // singleton resource - full access to url would be http://localhost:8080/api/v1/gliders/1abc
+    public ResponseEntity<?> getOneJet (@PathVariable("tailNumber") String tailNumber) {
+        try {
+            jetService.getOneJet(tailNumber);
+        } catch (NullPointerException e) { // Controller is handling error thrown by service
+            return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", does not exist.  Not found", HttpStatus.NOT_FOUND);
+        }
+        // Returns a glider object
+        return new ResponseEntity<>(jetService.getOneJet(tailNumber), HttpStatus.OK);
+    }
 
     // For POST method
     @PostMapping
-    public void createJet(@RequestBody Jet jet) {
-        jetService.createJet(jet.getTailNumber(), jet.getNumberOfWheels(), jet.getLength(), jet.getFuel());
+    public ResponseEntity<?> createJet(@RequestBody Jet jet) {
+        try {
+            jetService.createJet(jet.getTailNumber(), jet.getNumberOfWheels(), jet.getLength(), jet.getFuel());
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>("Jet can't be created", HttpStatus.BAD_REQUEST);
+        }
+        
+        return new ResponseEntity<>("Jet has been created", HttpStatus.CREATED);
+        
     }
 
     // for DELETE method
@@ -49,17 +66,21 @@ public class JetController {
         var isRemoved = jetService.deleteJet(tailNumber);
         // if jet is not deleted, do this:
         if (!isRemoved) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", does not exist.  Cannot delete.", HttpStatus.NOT_FOUND);
         }
         // else, do this:
-        return new ResponseEntity<>(tailNumber, HttpStatus.OK);
+        return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", has been deleted.", HttpStatus.OK);
     }
 
     // for UPDATE method
     @PutMapping("{tailNumber}") // full access to url would be http://localhost:8080/api/v1/jets/1abc
     public ResponseEntity<String> updateJet(@PathVariable("tailNumber") String tailNumber, @RequestBody Jet newJetDetails) {
-        jetService.updateJet(tailNumber, newJetDetails);
-        return ResponseEntity.ok("in progress");
+
+        var jetExists = jetService.updateJet(tailNumber, newJetDetails);
+        if (!jetExists) {
+            return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", does not exist.  Cannot modify.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", has been modified", HttpStatus.OK);
     }
 
 
