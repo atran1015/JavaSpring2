@@ -37,8 +37,7 @@ public class HelicopterService {
 
 
     public void createHelicopter(String tailNum, int wheelsNum, int length, int rpm) {
-        // TODO: check if rpm is null
-        if (tailNum.isEmpty()) {
+        if (tailNum.isEmpty() || rpm == 0) {
             throw new NullPointerException();
         }
         
@@ -52,14 +51,12 @@ public class HelicopterService {
         return isRemoved;
     }
 
-    // Find glider by tail number and then update old glider's information to new glider's information
+
     public boolean updateHelicopter(String tailNumber, Helicopter newHelicopterDetails) {
         boolean helicopterExists = false;
-        // For-each loop
         for (Helicopter helicopter : helicopters) {
             if (helicopter.getTailNumber().equals(tailNumber)) {
                 helicopterExists = true;
-                // Using model's functions
                 helicopter.setTailNumber(newHelicopterDetails.getTailNumber());
                 helicopter.setNumberOfWheels(newHelicopterDetails.getNumberOfWheels());
                 helicopter.setLength(newHelicopterDetails.getLength());
