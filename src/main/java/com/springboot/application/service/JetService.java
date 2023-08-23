@@ -1,3 +1,4 @@
+/* More comments can be found in GliderService.java */
 package com.springboot.application.service;
 import com.springboot.application.model.Jet;
 
@@ -49,6 +50,9 @@ public class JetService {
     }
 
     public boolean updateJet(String tailNumber, Jet newJetDetails) {
+        if (newJetDetails.getTailNumber().isEmpty() || newJetDetails.getFuel().isEmpty()) {
+            throw new NullPointerException();
+        }
         boolean jetExists = false;
         for (Jet jet : jets) {
             if (jet.getTailNumber().equals(tailNumber)) {

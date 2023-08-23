@@ -1,3 +1,4 @@
+/* More comments can be found in GliderService.java */
 package com.springboot.application.service;
 import com.springboot.application.model.Helicopter;
 
@@ -53,6 +54,9 @@ public class HelicopterService {
 
 
     public boolean updateHelicopter(String tailNumber, Helicopter newHelicopterDetails) {
+        if (newHelicopterDetails.getTailNumber().isEmpty() || newHelicopterDetails.getRotorRpm() == 0 ) {
+            throw new NullPointerException();
+        }
         boolean helicopterExists = false;
         for (Helicopter helicopter : helicopters) {
             if (helicopter.getTailNumber().equals(tailNumber)) {

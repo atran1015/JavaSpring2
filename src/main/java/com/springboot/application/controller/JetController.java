@@ -1,3 +1,5 @@
+/* More comments can be found in GliderController.java */
+
 package com.springboot.application.model;
 import com.springboot.application.model.Jet;
 import com.springboot.application.service.JetService;
@@ -35,13 +37,12 @@ public class JetController {
         } catch (NullPointerException e) { // Controller is handling error thrown by service
             return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", does not exist.  Not found", HttpStatus.NOT_FOUND);
         }
-        // Returns a glider object
         return new ResponseEntity<>(jetService.getOneJet(tailNumber), HttpStatus.OK);
     }
 
     // For POST method
     @PostMapping
-    public ResponseEntity<?> createJet(@RequestBody Jet jet) {
+    public ResponseEntity<String> createJet(@RequestBody Jet jet) {
         try {
             jetService.createJet(jet.getTailNumber(), jet.getNumberOfWheels(), jet.getLength(), jet.getFuel());
         } catch (NullPointerException e) {
@@ -57,11 +58,9 @@ public class JetController {
     public ResponseEntity<String> deleteJet(@PathVariable("tailNumber") String tailNumber) {
 
         var isRemoved = jetService.deleteJet(tailNumber);
-        // if jet is not deleted, do this:
         if (!isRemoved) {
             return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", does not exist.  Cannot delete.", HttpStatus.NOT_FOUND);
         }
-        // else, do this:
         return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", has been deleted.", HttpStatus.OK);
     }
 
@@ -69,10 +68,16 @@ public class JetController {
     @PutMapping("{tailNumber}") // full access to url would be http://localhost:8080/api/v1/jets/1abc
     public ResponseEntity<String> updateJet(@PathVariable("tailNumber") String tailNumber, @RequestBody Jet newJetDetails) {
 
-        var jetExists = jetService.updateJet(tailNumber, newJetDetails);
-        if (!jetExists) {
-            return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", does not exist.  Cannot modify.", HttpStatus.BAD_REQUEST);
+        //var jetExists = jetService.updateJet(tailNumber, newJetDetails);
+        try {
+            var jetExists = jetService.updateJet(tailNumber, newJetDetails);
+            if (!jetExists) {
+                return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", does not exist.  Cannot modify.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>("Jet can't be modified", HttpStatus.BAD_REQUEST);
         }
+        
         return new ResponseEntity<>("Jet with this tail number, " + tailNumber + ", has been modified", HttpStatus.OK);
     }
 

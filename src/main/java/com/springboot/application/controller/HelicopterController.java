@@ -1,3 +1,4 @@
+/* More comments can be found in GliderController.java */
 package com.springboot.application.model;
 import com.springboot.application.model.Helicopter;
 import com.springboot.application.service.HelicopterService;
@@ -41,7 +42,7 @@ public class HelicopterController {
 
     // For POST method
     @PostMapping
-    public ResponseEntity<?> createHelicopter(@RequestBody Helicopter helicopter) {
+    public ResponseEntity<String> createHelicopter(@RequestBody Helicopter helicopter) {
         try {
             helicopterService.createHelicopter(helicopter.getTailNumber(), helicopter.getNumberOfWheels(), helicopter.getLength(), helicopter.getRotorRpm());
         } catch (NullPointerException e) {
@@ -64,9 +65,13 @@ public class HelicopterController {
     // for UPDATE method
     @PutMapping("{tailNumber}")
     public ResponseEntity<String> updateHelicopter(@PathVariable("tailNumber") String tailNumber, @RequestBody Helicopter newHelicopterDetails) {
-        var helicopterExists = helicopterService.updateHelicopter(tailNumber, newHelicopterDetails);
-        if (!helicopterExists) {
-            return new ResponseEntity<>("Helicopter with this tail number, " + tailNumber + ", does not exist.  Cannot modify.", HttpStatus.BAD_REQUEST);
+        try {
+            var helicopterExists = helicopterService.updateHelicopter(tailNumber, newHelicopterDetails);
+            if (!helicopterExists) {
+                return new ResponseEntity<>("Helicopter with this tail number, " + tailNumber + ", does not exist.  Cannot modify.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>("Helicopter can't be modified", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Helicopter with this tail number, " + tailNumber + ", has been modified", HttpStatus.OK);
     }

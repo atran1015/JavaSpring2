@@ -1,6 +1,6 @@
 # About
 
-The purpose of this repository is to demonstrate understanding of Object Oriented Design, Inheritance, Polymorphism, and Spring Boot application.
+The purpose of this repository is to demonstrate understanding of CRUD operations with Spring Boot application.
 
 # Instruction
 

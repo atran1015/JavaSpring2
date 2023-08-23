@@ -34,6 +34,7 @@ public class GliderController {
         try {
             gliderService.getOneGlider(tailNumber);
         } catch (NullPointerException e) { // Controller is handling error thrown by service
+            // Returns string
             return new ResponseEntity<>("Glider with this tail number, " + tailNumber + ", does not exist.  Not found", HttpStatus.NOT_FOUND);
         }
         // Returns a glider object
@@ -43,7 +44,7 @@ public class GliderController {
 
     // For POST method
     @PostMapping
-    public ResponseEntity<?> createGlider(@RequestBody Glider glider) {
+    public ResponseEntity<String> createGlider(@RequestBody Glider glider) {
         try {
             gliderService.createGlider(glider.getTailNumber(), glider.getNumberOfWheels(), glider.getLength(), glider.getTowPlaneName());
         } catch (NullPointerException e) {
@@ -69,11 +70,16 @@ public class GliderController {
     // for UPDATE method
     @PutMapping("{tailNumber}") // full access to url would be http://localhost:8080/api/v1/gliders/1abc
     public ResponseEntity<String> updateGlider(@PathVariable("tailNumber") String tailNumber, @RequestBody Glider newGliderDetails) {
-        var gliderExists = gliderService.updateGlider(tailNumber, newGliderDetails);
+        try {
+            var gliderExists = gliderService.updateGlider(tailNumber, newGliderDetails);
 
-        if (!gliderExists) {
-            return new ResponseEntity<>("Glider with this tail number, " + tailNumber + ", does not exist.  Cannot modify.", HttpStatus.BAD_REQUEST);
+            if (!gliderExists) {
+                return new ResponseEntity<>("Glider with this tail number, " + tailNumber + ", does not exist.  Cannot modify.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>("Glider can't be modified", HttpStatus.BAD_REQUEST);
         }
+        
         // Any bad data update would be handled by DefaultHandlerExceptionResolver
         return new ResponseEntity<>("Glider with this tail number, " + tailNumber + ", has been modified", HttpStatus.OK);
     }

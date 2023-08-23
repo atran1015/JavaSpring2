@@ -24,6 +24,7 @@ public class GliderService {
     public Glider getOneGlider(String tailNumber) {
         Glider aGlider = new Glider();
         boolean gliderExists = false;
+        // Searches the list of gliders, if there is a match, then return it
         for (Glider glider : gliders) {
             if (glider.getTailNumber().equals(tailNumber)) {
                 aGlider = glider;
@@ -41,10 +42,10 @@ public class GliderService {
 
     // Create a list of glider objects
     public void createGlider(String tailNum, int wheelsNum, int length, String towPlaneName) {
+        // Throw error if tow plane name is null or tail number is null
         if (towPlaneName.isEmpty() || tailNum.isEmpty()) {
             throw new NullPointerException();
         }
-        
         Glider myGlider = new Glider(tailNum, wheelsNum, length, towPlaneName);
         gliders.add(myGlider);
     }
@@ -58,6 +59,9 @@ public class GliderService {
     // Find glider by tail number and then update old glider's information to new glider's information
     public boolean updateGlider(String tailNumber, Glider newGliderDetails) {
         boolean gliderExists = false;
+        if (newGliderDetails.getTailNumber().isEmpty() || newGliderDetails.getTowPlaneName().isEmpty()) {
+            throw new NullPointerException();
+        }
         // For-each loop
         for (Glider glider : gliders) {
             if (glider.getTailNumber().equals(tailNumber)) {
